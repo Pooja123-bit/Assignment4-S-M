@@ -144,3 +144,17 @@ df.CP
 colnames(df.CP)[1]="transect"
 df.CP
 
+#Using the join function, combine the data frames with the mean 
+#and standard deviation to create one, new data frame that has three columns (mean density, sd density, count, and transect).
+
+Q2.df<-full_join(Q1.df, df.CP, by = "transect")
+Q2.df
+
+#Select any 2 fields (e.g. area, depth, year, transect) in the 
+#fish_data.Rdata to group by
+
+S1=tapply(f$parcel.length.m, list(f$area_fac), FUN = fivenum)
+S1
+
+S2=tapply(f$parcel.length.m, list(f$depth_fac), FUN = fivenum)
+S2
