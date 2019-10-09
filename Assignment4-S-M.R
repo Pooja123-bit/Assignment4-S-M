@@ -67,3 +67,80 @@ rownames(df.C)=NULL
 C1.df=cbind(transect,df.C)
 C1.df
 
+#Using the merge function, combine the data frames with the mean and standard deviation to create
+#one, new data frame that has three columns (mean density, sd density, count, and transect).
+
+P2.df<-merge(x=P1.df, y=C1.df, by = "transect")
+P2.df
+
+#Summarize & join
+
+#Using the group_by and summarise functions (tidyverse package), 
+#find the mean of 'parcel.density.m3'for each transect and assign the outcome to an object.
+
+library(tidyverse)
+f %>% group_by(transect.id) %>%
+  summarize(parcel.density.m3 = mean(parcel.density.m3, na.rm = TRUE))
+MP<- f %>% group_by(transect.id) %>%
+  summarize(parcel.density.m3 = mean(parcel.density.m3, na.rm = TRUE))
+MP
+
+#Convert the object to a data frame
+
+df.MP<-as.data.frame(MP)
+df.MP
+
+#Rename the column with the density values to something more descriptive
+
+names(df.MP)[names(df.MP) == "parcel.density.m3"] <- "mean density"  
+df.MP
+
+#Assign the row names of the data frame to be the values in a 
+#new field "transect"
+
+colnames(df.MP)[1]="transect"
+df.MP
+
+#Repeat the above steps, but this time using the tapply function 
+#to find the standard deviation of'parcel.density.m3'
+
+JP<-f %>% group_by(transect.id) %>%
+  summarize(parcel.density.m3 = sd(parcel.density.m3, na.rm = TRUE))
+JP
+
+df.JP<-as.data.frame(JP)
+df.JP
+
+names(df.JP)[names(df.JP) == "parcel.density.m3"] <- "sd density"  
+df.JP
+
+colnames(df.JP)[1]="transect"
+df.JP
+
+#Using the join function (tidyverse package), combine the data 
+#frames with the mean and standard deviation to create one, new data frame that has three columns (mean density, sd density, transect)
+
+Q1.df<- full_join(df.MP, df.JP, by = "transect")
+Q1.df
+
+#Repeat the above steps, but this time using the tapply function 
+#to find the count of observations for each transect for 'parcel.density.m3''.
+
+CP<-f %>% group_by(transect.id) %>%
+  summarize(parcel.density.m3 = sum(parcel.density.m3, na.rm = TRUE))
+
+CP
+
+#Another way to summarize
+AP=aggregate(x=f$parcel.density.m3, by = list(f$transect.id), FUN = sum)
+AP
+
+df.CP<-as.data.frame(CP)
+df.CP
+
+names(df.CP)[names(df_CP) == "parcel.density.m3"] <- "count"  
+df.CP
+
+colnames(df.CP)[1]="transect"
+df.CP
+
