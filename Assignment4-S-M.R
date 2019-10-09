@@ -138,7 +138,7 @@ AP
 df.CP<-as.data.frame(CP)
 df.CP
 
-names(df.CP)[names(df_CP) == "parcel.density.m3"] <- "count"  
+names(df.CP)[names(df.CP) == "parcel.density.m3"] <- "count"  
 df.CP
 
 colnames(df.CP)[1]="transect"
